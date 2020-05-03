@@ -104,7 +104,57 @@ $container->factories((new MyServiceProviderFactory())());
 
 ## Slim 4 integration
 
+Example to boostrap a Slim 4 application using the container:
 
+```php
+<?php
+
+use Selective\Container\Container;
+use Selective\Container\Resolver\ConstructorResolver;
+use Slim\App;
+use Slim\Factory\AppFactory;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$container = new Container();
+
+// Enable autowiring
+$container->addResolver(new ConstructorResolver($container));
+
+// Load container definitons
+$container->factories(require __DIR__ . '/container.php');
+
+// Create slim app instance
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+
+// Add routes, middleware etc...
+
+$app->run();
+```
+
+The `container.php` ust return an array with factories (closures):
+
+```php
+<?php
+use Psr\Log\LoggerInterface;
+
+return [
+    'settings' => function () {
+        return require __DIR__ . '/settings.php';
+    },
+
+    LoggerInterface::class => function (ContainerInterface $container) {
+        $logger = new Logger('name');
+        
+        // ...
+        
+        return $logger;
+    },
+    
+    // Add more definitions here...
+}
+```
 
 ## IDE integration
 
