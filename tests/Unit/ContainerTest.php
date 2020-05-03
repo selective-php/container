@@ -297,9 +297,26 @@ final class ContainerTest extends TestCase
     public function testAutowireWithInvalidAbstractClass(): void
     {
         $this->expectException(InvalidDefinitionException::class);
+        $this->expectErrorMessage('Entry "Selective\Tests\Container\Unit\Service\MyAbstractService" cannot ' .
+            'be resolved: the class is not instantiable');
 
         $container = new Container();
         $container->addResolver(new ConstructorResolver($container));
         $container->get(MyAbstractService::class);
+    }
+
+    /**
+     * Test.
+     *
+     * @return void
+     */
+    public function testAutowireWithNotExistingClass(): void
+    {
+        $this->expectException(NotFoundException::class);
+        $this->expectErrorMessage('There is no service with id "Nada\Foo"');
+
+        $container = new Container();
+        $container->addResolver(new ConstructorResolver($container));
+        $container->get('Nada\Foo');
     }
 }

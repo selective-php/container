@@ -4,6 +4,7 @@ namespace Selective\Container\Exceptions;
 
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
+use Throwable;
 
 /**
  * Invalid definition.
@@ -14,11 +15,11 @@ class InvalidDefinitionException extends Exception implements ContainerException
      * Create exception.
      *
      * @param string $message The error message
-     * @param Exception|null $previous The previouse exception
+     * @param Throwable|null $previous The previouse exception
      *
      * @return self
      */
-    public static function create(string $message, Exception $previous = null): self
+    public static function create(string $message, Throwable $previous = null): self
     {
         return new self($message, 0, $previous);
     }

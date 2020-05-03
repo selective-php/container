@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use Selective\Container\Exceptions\InvalidDefinitionException;
-use Selective\Container\Exceptions\NotFoundException;
+use Throwable;
 
 /**
  * Constructor parameter resolver.
@@ -42,26 +42,26 @@ final class ConstructorResolver implements DefinitionResolverInterface
     public function resolve(string $id)
     {
         if (!class_exists($id, true)) {
-            throw NotFoundException::create(sprintf('The class %s does not exists', $id));
+            throw InvalidDefinitionException::create(sprintf(
+                'Entry "%s" cannot be resolved: The class doesn\'t exist',
+                $id
+            ));
         }
 
         $reflectionClass = new ReflectionClass($id);
 
-        if ($reflectionClass->isInterface() ||
-            $reflectionClass->isAbstract() ||
-            $reflectionClass->isTrait() ||
-            $reflectionClass->isAnonymous()
-        ) {
-            throw InvalidDefinitionException::create(sprintf('The definition %s is not guessable', $id));
+        try {
+            if ($reflectionClass->getConstructor() === null) {
+                return $reflectionClass->newInstance();
+            }
+
+            return $reflectionClass->newInstanceArgs($this->resolveParameters($id, $reflectionClass->getConstructor()));
+        } catch (Throwable $exception) {
+            throw InvalidDefinitionException::create(sprintf(
+                'Entry "%s" cannot be resolved: the class is not instantiable',
+                $id
+            ), $exception);
         }
-
-        if ($reflectionClass->getConstructor() === null) {
-            return $reflectionClass->newInstance();
-        }
-
-        $constructorArguments = $this->resolveParameters($id, $reflectionClass->getConstructor());
-
-        return $reflectionClass->newInstanceArgs($constructorArguments);
     }
 
     /**
