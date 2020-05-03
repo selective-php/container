@@ -103,7 +103,7 @@ final class Container implements ContainerInterface, FactoryInterface
      */
     public function has($id): bool
     {
-        return isset($this->factories[$id]);
+        return isset($this->factories[$id]) || $this->isResolvable($id);
     }
 
     /**
@@ -140,6 +140,24 @@ final class Container implements ContainerInterface, FactoryInterface
     public function addResolver(DefinitionResolverInterface $resolver): void
     {
         $this->resolvers[] = $resolver;
+    }
+
+    /**
+     * Check if a definition can be resolved.
+     *
+     * @param string|class-string $id The full class name
+     *
+     * @return bool Status
+     */
+    private function isResolvable(string $id): bool
+    {
+        foreach ($this->resolvers as $resolver) {
+            if ($resolver->isResolvable($id)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

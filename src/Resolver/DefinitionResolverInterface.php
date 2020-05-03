@@ -19,4 +19,13 @@ interface DefinitionResolverInterface
      * @return mixed the value obtained from the definition
      */
     public function resolve(string $id);
+
+    /**
+     * Check if a definition can be resolved.
+     *
+     * @param string|class-string $id The full class name
+     *
+     * @return bool Status
+     */
+    public function isResolvable(string $id): bool;
 }

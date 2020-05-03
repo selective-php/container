@@ -102,6 +102,10 @@ $container = new Container();
 $container->factories((new MyServiceProviderFactory())());
 ```
 
+## Slim 4 integration
+
+
+
 ## IDE integration
 
 If you use PhpStorm, then create a new file `.phpstorm.meta.php`
@@ -114,6 +118,15 @@ namespace PHPSTORM_META;
 
 override(\Psr\Container\ContainerInterface::get(0), map(['' => '@']));
 ```
+
+## Performance
+
+`selective/container` is about:
+
+* ~11% faster then `php-di/php-di`.
+* ~5.4% faster then `league/container`.
+
+All tests where made with enabled autowiring.
 
 ## Credits
 

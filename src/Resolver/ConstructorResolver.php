@@ -41,7 +41,7 @@ final class ConstructorResolver implements DefinitionResolverInterface
      */
     public function resolve(string $id)
     {
-        if (!class_exists($id, true)) {
+        if (!$this->isResolvable($id)) {
             throw InvalidDefinitionException::create(sprintf(
                 'Entry "%s" cannot be resolved: The class doesn\'t exist',
                 $id
@@ -105,5 +105,17 @@ final class ConstructorResolver implements DefinitionResolverInterface
         }
 
         return $arguments;
+    }
+
+    /**
+     * Check if a definition can be resolved.
+     *
+     * @param string|class-string $id The full class name
+     *
+     * @return bool Status
+     */
+    public function isResolvable(string $id): bool
+    {
+        return class_exists($id);
     }
 }
