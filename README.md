@@ -133,10 +133,13 @@ $app = AppFactory::create();
 $app->run();
 ```
 
-The `container.php` ust return an array with factories (closures):
+The `container.php` file must return an array of factories (closures):
 
 ```php
 <?php
+
+use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 return [
@@ -173,8 +176,8 @@ override(\Psr\Container\ContainerInterface::get(0), map(['' => '@']));
 
 `selective/container` is about:
 
-* ~11% faster then `php-di/php-di`.
-* ~5.4% faster then `league/container`.
+* 11% faster then `php-di/php-di`.
+* 5.4% faster then `league/container`.
 
 All tests where made with enabled autowiring.
 
