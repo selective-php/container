@@ -7,6 +7,7 @@ namespace Selective\Container\Resolver;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionParameter;
 use Selective\Container\Exceptions\InvalidDefinitionException;
 use Throwable;
 
@@ -51,11 +52,12 @@ final class ConstructorResolver implements DefinitionResolverInterface
         $reflectionClass = new ReflectionClass($id);
 
         try {
-            if ($reflectionClass->getConstructor() === null) {
+            $constructor = $reflectionClass->getConstructor();
+            if ($constructor === null) {
                 return $reflectionClass->newInstance();
             }
 
-            return $reflectionClass->newInstanceArgs($this->resolveParameters($id, $reflectionClass->getConstructor()));
+            return $reflectionClass->newInstanceArgs($this->resolveParameters($id, $constructor));
         } catch (Throwable $exception) {
             throw InvalidDefinitionException::create(sprintf(
                 'Entry "%s" cannot be resolved: the class is not instantiable',
@@ -70,8 +72,6 @@ final class ConstructorResolver implements DefinitionResolverInterface
      * @param string $id The id
      * @param ReflectionMethod $method The method
      *
-     * @throws InvalidDefinitionException
-     *
      * @return array<mixed> The resolved parameters
      */
     private function resolveParameters(string $id, ReflectionMethod $method = null): array
@@ -83,28 +83,45 @@ final class ConstructorResolver implements DefinitionResolverInterface
         $arguments = [];
 
         foreach ($method->getParameters() as $parameter) {
-            $reflectionClass = $parameter->getClass();
-
-            if ($reflectionClass === null) {
-                throw InvalidDefinitionException::create(sprintf(
-                    'Parameter $%s of %s has no value defined or guessable',
-                    $parameter->getName(),
-                    $id
-                ));
-            }
-
-            // If the parameter is optional and wasn't specified, we take its default value
-            if ($parameter->isDefaultValueAvailable() || $parameter->isOptional()) {
-                $arguments[] = $parameter->getDefaultValue();
-
-                continue;
-            }
-
-            // Look in the definitions or try to create it
-            $arguments[] = $this->container->get($reflectionClass->getName());
+            $arguments[] = $this->resolveParameter($id, $parameter);
         }
 
         return $arguments;
+    }
+
+    /**
+     * Resolve paramameter value.
+     *
+     * @param string $id The id
+     * @param ReflectionParameter $parameter The parameter
+     *
+     * @throws InvalidDefinitionException
+     *
+     * @return mixed The value
+     */
+    private function resolveParameter(string $id, ReflectionParameter $parameter)
+    {
+        $reflectionClass = $parameter->getClass();
+
+        if ($reflectionClass !== null) {
+            // Look in the definitions or try to create it
+            $className = $reflectionClass->getName();
+
+            if ($this->container->has($className)) {
+                return $this->container->get($className);
+            }
+        }
+
+        // If the parameter is optional and wasn't specified, we take its default value
+        if ($parameter->isDefaultValueAvailable() || $parameter->isOptional()) {
+            return $parameter->getDefaultValue();
+        }
+
+        throw InvalidDefinitionException::create(sprintf(
+            'Parameter $%s of %s has no value defined or guessable',
+            $parameter->getName(),
+            $id
+        ));
     }
 
     /**
