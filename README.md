@@ -51,7 +51,6 @@ On top of autowiring, you can use a factories (closures) to define injections.
 
 use App\Service\MyService;
 use Selective\Container\Container;
-use Selective\Container\Resolver\ConstructorResolver;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -63,7 +62,7 @@ $container->factory(MyService::class, function (ContainerInterface $container) {
 });
 ```
 
-**Please note:** To avoid **unwanted side effects**, it is not supported to replace or extend an existing definition.
+**Please note:** It's not supported to replace or extend an existing definition to avoid **unwanted side effects**.
 
 ### Service providers
 
