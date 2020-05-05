@@ -79,9 +79,22 @@ final class Container implements ContainerInterface, FactoryInterface
     }
 
     /**
+     * Define an object or a value in the container.
+     *
+     * @param string $id The identifier
+     * @param mixed $value The value
+     *
+     * @return void
+     */
+    public function set(string $id, $value): void
+    {
+        $this->services[$id] = $value;
+    }
+
+    /**
      * Finds an entry of the container by its identifier and returns it.
      *
-     * @param string $id Identifier of the entry to look for
+     * @param string $id The identifier of the entry to look for
      *
      * @return mixed The entry
      */

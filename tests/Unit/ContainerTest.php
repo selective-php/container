@@ -132,6 +132,27 @@ final class ContainerTest extends TestCase
      *
      * @return void
      */
+    public function testSet(): void
+    {
+        $container = new Container();
+        $container->set('id', 'value');
+        self::assertSame('value', $container->get('id'));
+
+        $stdClass = new stdClass();
+        $container->set(stdClass::class, $stdClass);
+        self::assertInstanceOf(stdClass::class, $container->get(stdClass::class));
+        self::assertSame($stdClass, $container->get(stdClass::class));
+
+        $container->set(stdClass::class, new stdClass());
+        self::assertInstanceOf(stdClass::class, $container->get(stdClass::class));
+        self::assertNotSame($stdClass, $container->get(stdClass::class));
+    }
+
+    /**
+     * Test.
+     *
+     * @return void
+     */
     public function testGet(): void
     {
         $factories = [];
