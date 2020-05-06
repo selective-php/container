@@ -12,9 +12,9 @@ interface FactoryInterface
      *
      * @param array<string, callable> $factories The callables
      *
-     * @return self
+     * @return void
      */
-    public function factories(array $factories): self;
+    public function factories(array $factories): void;
 
     /**
      * Add a single factory.
@@ -22,7 +22,7 @@ interface FactoryInterface
      * @param string $id The id
      * @param callable $factory The callable
      *
-     * @return self
+     * @return void
      */
-    public function factory(string $id, callable $factory): self;
+    public function factory(string $id, callable $factory): void;
 }

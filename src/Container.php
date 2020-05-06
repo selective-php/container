@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Selective\Container;
 
@@ -38,6 +38,8 @@ final class Container implements ContainerInterface, FactoryInterface
      */
     public function __construct(array $factories = [])
     {
+        $this->set(__CLASS__, $this);
+        $this->set(ContainerInterface::class, $this);
         $this->factories($factories);
     }
 
@@ -46,15 +48,13 @@ final class Container implements ContainerInterface, FactoryInterface
      *
      * @param array<string, callable> $factories The callables
      *
-     * @return $this|FactoryInterface The container
+     * @return void
      */
-    public function factories(array $factories): FactoryInterface
+    public function factories(array $factories): void
     {
         foreach ($factories as $id => $factory) {
             $this->factory($id, $factory);
         }
-
-        return $this;
     }
 
     /**
@@ -63,19 +63,17 @@ final class Container implements ContainerInterface, FactoryInterface
      * @param string $id The container id
      * @param callable $factory The callable
      *
-     * @throws LogicException If the factory is locked
+     * @throws LogicException When the given factory already exists
      *
-     * @return self|FactoryInterface The container
+     * @return void
      */
-    public function factory(string $id, callable $factory): FactoryInterface
+    public function factory(string $id, callable $factory): void
     {
         if (isset($this->factories[$id])) {
             throw new LogicException('The factory cannot be modified');
         }
 
         $this->factories[$id] = $factory;
-
-        return $this;
     }
 
     /**
@@ -116,7 +114,7 @@ final class Container implements ContainerInterface, FactoryInterface
      */
     public function has($id): bool
     {
-        return isset($this->factories[$id]) || $this->isResolvable($id);
+        return isset($this->services[$id]) || isset($this->factories[$id]) || $this->isResolvable($id);
     }
 
     /**
