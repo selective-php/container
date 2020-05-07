@@ -82,7 +82,7 @@ use Selective\Container\Container;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-final class MyServiceProviderFactory
+final class MyServiceFactoryProvider
 {
     /**
      * @return array<string, callable>
@@ -98,7 +98,7 @@ final class MyServiceProviderFactory
 }
 
 $container = new Container();
-$container->factories((new MyServiceProviderFactory())());
+$container->factories((new MyServiceFactoryProvider())());
 ```
 
 ## Slim 4 integration
