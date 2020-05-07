@@ -62,7 +62,7 @@ $container->factory(MyService::class, function (ContainerInterface $container) {
 });
 ```
 
-**Please note:** It's not supported to replace or extend an existing definition to avoid **unwanted side effects**.
+**Please note:** It's not supported to replace or extend an existing factory definition to avoid **unwanted side effects**.
 
 ### Service providers
 
