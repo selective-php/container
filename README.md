@@ -113,7 +113,7 @@ In addition to defining entries in an array of factories, you can set them direc
 $container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
 ```
 
-### Fetch services
+### Fetch container entries
 
 To fetch a service use the `get` method:
 
