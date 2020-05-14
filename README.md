@@ -105,20 +105,20 @@ $container = new Container();
 $container->factories((new MyServiceFactoryProvider())());
 ```
 
+### Setting definitions in the container directly
+
+In addition to defining entries in an array of factories, you can set them directly in the container as shown below:
+
+```php
+$container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
+```
+
 ### Fetch services
 
 To fetch a service use the `get` method:
 
 ```php
 $pdo = $container->get(PDO::class);
-```
-
-### Setting definitions in the container directly
-
-In addition to defining entries in an array, you can set them directly in the container as shown below:
-
-```php
-$container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
 ```
 
 ### Testing
@@ -139,7 +139,10 @@ $mock = $this->getMockBuilder($class)
     ->disableOriginalConstructor()
     ->setMethods(['methodToMock1', 'methodToMock2'])
     ->getMock();
-            
+
+$mock->method('methodToMock1')->willReturn(1);
+$mock->method('methodToMock2')->willReturn(2);
+
 $container->set($class, $mock);
 ```
 
