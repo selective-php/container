@@ -23,6 +23,8 @@ composer require selective/container
 
 ## Usage
 
+General advise: Don't use the container as a service locator.
+
 ### Factories
 
 You can use a factories (closures) to define injections.
@@ -101,6 +103,44 @@ final class MyServiceFactoryProvider
 
 $container = new Container();
 $container->factories((new MyServiceFactoryProvider())());
+```
+
+### Fetch services
+
+To fetch a service use the `get` method:
+
+```php
+$pdo = $container->get(PDO::class);
+```
+
+### Setting definitions in the container directly
+
+In addition to defining entries in an array, you can set them directly in the container as shown below:
+
+```php
+$container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
+```
+
+### Testing
+
+* Make sure that your container will be recreated for each test. You may use the phpunit `setUp()` method to initialize the container definitions.
+* You can use the `set()` method to overwrite existing container entries.
+
+#### Mocking
+
+The `set` method can also be used to set mocked objects directly into the container.
+
+This examplex requires phpunit:
+
+```php
+$class = \App\Domain\User\Repository\UserRepository::class;
+
+$mock = $this->getMockBuilder($class)
+    ->disableOriginalConstructor()
+    ->setMethods(['methodToMock1', 'methodToMock2'])
+    ->getMock();
+            
+$container->set($class, $mock);
 ```
 
 ## Slim 4 integration
