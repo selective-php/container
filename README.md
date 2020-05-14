@@ -23,28 +23,9 @@ composer require selective/container
 
 ## Usage
 
-### Use dependency injection
-
-The container is able to automatically create and inject dependencies for you. This is called "autowiring".
-
-```php
-<?php
-
-use App\Service\MyService;
-use Selective\Container\Container;
-use Selective\Container\Resolver\ConstructorResolver;
-
-$container = new Container();
-
-// Enable autowiring
-$container->addResolver(new ConstructorResolver($container));
-
-$service = $container->get(MyService::class);
-```
-
 ### Factories
 
-On top of autowiring, you can use a factories (closures) to define injections.
+You can use a factories (closures) to define injections.
 
 ```php
 <?php
@@ -63,6 +44,22 @@ $container->factory(MyService::class, function (ContainerInterface $container) {
 ```
 
 **Please note:** It's not supported to replace or extend an existing factory definition to avoid **unwanted side effects**.
+
+### Use dependency injection
+
+The container is able to automatically create and inject dependencies for you. This is called "autowiring".
+
+```php
+<?php
+
+use Selective\Container\Container;
+use Selective\Container\Resolver\ConstructorResolver;
+
+$container = new Container();
+
+// Enable autowiring
+$container->addResolver(new ConstructorResolver($container));
+```
 
 ### Service providers
 
