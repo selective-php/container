@@ -137,11 +137,10 @@ $class = \App\Domain\User\Repository\UserRepository::class;
 
 $mock = $this->getMockBuilder($class)
     ->disableOriginalConstructor()
-    ->setMethods(['methodToMock1', 'methodToMock2'])
     ->getMock();
 
-$mock->method('methodToMock1')->willReturn(1);
-$mock->method('methodToMock2')->willReturn(2);
+$mock->method('methodToMock1')->willReturn('foo');
+$mock->method('methodToMock2')->willReturn('bar');
 
 $container->set($class, $mock);
 ```
