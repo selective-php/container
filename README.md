@@ -49,6 +49,8 @@ $container->factory(MyService::class, function (ContainerInterface $container) {
 
 The container is able to automatically create and inject dependencies for you. This is called "autowiring".
 
+To enable autowiring you have to add the `ConstructorResolver`:
+
 ```php
 <?php
 
@@ -59,6 +61,9 @@ $container = new Container();
 
 // Enable autowiring
 $container->addResolver(new ConstructorResolver($container));
+
+//...
+
 ```
 
 ### Service providers
