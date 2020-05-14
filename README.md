@@ -226,6 +226,47 @@ override(\Psr\Container\ContainerInterface::get(0), map(['' => '@']));
 
 All tests where made with enabled autowiring.
 
+## Migrating from PHI-DI
+
+This PSR-11 container implementation mimics the behavior of PHP-DI.
+
+If you already use [factories](https://php-di.org/doc/php-definitions.html#factories) for your container definitions,
+the switch should be very simple.
+
+Replace this:
+
+```php
+<?php
+use DI\ContainerBuilder;
+
+// ...
+
+$containerBuilder = new ContainerBuilder();
+
+$containerBuilder->addDefinitions(__DIR__ . '/container.php');
+
+$container = $containerBuilder->build();
+```
+
+... with this:
+
+```php
+<?php
+use Selective\Container\Container;
+use Selective\Container\Resolver\ConstructorResolver;
+// ...
+
+$container = new Container();
+
+// Enable autowiring
+$container->addResolver(new ConstructorResolver($container));
+
+// Add definitons
+$container->factories(require __DIR__ . '/container.php');
+```
+
+That's it.
+
 ## Credits
 
 * Dominik Zogg (chubbyphp)
