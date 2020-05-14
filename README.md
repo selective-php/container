@@ -133,6 +133,8 @@ The `set` method can also be used to set mocked objects directly into the contai
 This examplex requires phpunit:
 
 ```php
+<?php
+
 $class = \App\Domain\User\Repository\UserRepository::class;
 
 $mock = $this->getMockBuilder($class)
