@@ -9,7 +9,7 @@
 
 ## Description
 
-A simple PSR-11 container implementation with **autowiring**.
+A simple PSR-11 container implementation with optional **autowiring**.
 
 ## Requirements
 
