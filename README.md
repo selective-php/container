@@ -201,7 +201,7 @@ return [
     },
     
     // Add more definitions here...
-}
+]
 ```
 
 ## IDE integration
