@@ -226,7 +226,7 @@ override(\Psr\Container\ContainerInterface::get(0), map(['' => '@']));
 
 All tests where made with enabled autowiring.
 
-## Migrating from PHI-DI
+## Migrating from PHP-DI
 
 This PSR-11 container implementation mimics the behavior of PHP-DI.
 
