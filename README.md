@@ -130,7 +130,7 @@ $pdo = $container->get(PDO::class);
 
 The `set` method can also be used to set mocked objects directly into the container.
 
-This examplex requires phpunit:
+This example requires phpunit:
 
 ```php
 <?php
