@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\Tests\Container\Unit\Service;
+namespace Selective\Container\Test\TestCase\Service;
 
 /**
  * Service.

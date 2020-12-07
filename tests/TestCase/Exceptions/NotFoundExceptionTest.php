@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\Tests\Container\Unit\Exceptions;
+namespace Selective\Container\Test\TestCase\Exceptions;
 
 use PHPUnit\Framework\TestCase;
 use Selective\Container\Exceptions\NotFoundException;
@@ -21,7 +21,7 @@ final class NotFoundExceptionTest extends TestCase
     {
         $exception = NotFoundException::create('id');
 
-        self::assertSame('There is no service with id "id"', $exception->getMessage());
-        self::assertSame(0, $exception->getCode());
+        $this->assertSame('There is no service with id "id"', $exception->getMessage());
+        $this->assertSame(0, $exception->getCode());
     }
 }

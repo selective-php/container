@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\Tests\Container\Unit\Exceptions;
+namespace Selective\Container\Test\TestCase\Exceptions;
 
 use PHPUnit\Framework\TestCase;
 use Selective\Container\Exceptions\InvalidDefinitionException;
@@ -21,7 +21,7 @@ final class InvalidDefinitionExceptionTest extends TestCase
     {
         $exception = InvalidDefinitionException::create('message');
 
-        self::assertSame('message', $exception->getMessage());
-        self::assertSame(0, $exception->getCode());
+        $this->assertSame('message', $exception->getMessage());
+        $this->assertSame(0, $exception->getCode());
     }
 }

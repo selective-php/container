@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\Tests\Container\Unit\Exceptions;
+namespace Selective\Container\Test\TestCase\Exceptions;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -22,8 +22,8 @@ final class ContainerExceptionTest extends TestCase
 
         $exception = ContainerException::create('id', $previous);
 
-        self::assertSame('Could not create service with id "id"', $exception->getMessage());
-        self::assertSame(0, $exception->getCode());
-        self::assertSame($previous, $exception->getPrevious());
+        $this->assertSame('Could not create service with id "id"', $exception->getMessage());
+        $this->assertSame(0, $exception->getCode());
+        $this->assertSame($previous, $exception->getPrevious());
     }
 }

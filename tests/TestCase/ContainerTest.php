@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Selective\Tests\Container\Unit;
+namespace Selective\Container\Test\TestCase;
 
 use Exception;
 use LogicException;
@@ -14,10 +14,10 @@ use Selective\Container\Exceptions\ContainerException;
 use Selective\Container\Exceptions\InvalidDefinitionException;
 use Selective\Container\Exceptions\NotFoundException;
 use Selective\Container\Resolver\ConstructorResolver;
-use Selective\Tests\Container\Unit\Service\MyAbstractService;
-use Selective\Tests\Container\Unit\Service\MyService;
-use Selective\Tests\Container\Unit\Service\MyServiceA;
-use Selective\Tests\Container\Unit\Service\MyServiceInvalid;
+use Selective\Container\Test\TestCase\Service\MyAbstractService;
+use Selective\Container\Test\TestCase\Service\MyService;
+use Selective\Container\Test\TestCase\Service\MyServiceA;
+use Selective\Container\Test\TestCase\Service\MyServiceInvalid;
 use stdClass;
 
 /**
@@ -45,13 +45,13 @@ final class ContainerTest extends TestCase
 
         $factories = $reflectionFactories->getValue($container);
 
-        self::assertCount(1, $factories);
+        $this->assertCount(1, $factories);
 
         $factory = array_shift($factories);
 
         $service = $factory($container);
 
-        self::assertInstanceOf(stdClass::class, $service);
+        $this->assertInstanceOf(stdClass::class, $service);
     }
 
     /**
@@ -73,13 +73,13 @@ final class ContainerTest extends TestCase
 
         $factories = $reflectionFactories->getValue($container);
 
-        self::assertCount(1, $factories);
+        $this->assertCount(1, $factories);
 
         $factory = array_shift($factories);
 
         $service = $factory($container);
 
-        self::assertInstanceOf(stdClass::class, $service);
+        $this->assertInstanceOf(stdClass::class, $service);
     }
 
     /**
@@ -99,13 +99,13 @@ final class ContainerTest extends TestCase
 
         $factories = $reflectionFactories->getValue($container);
 
-        self::assertCount(1, $factories);
+        $this->assertCount(1, $factories);
 
         $factory = array_shift($factories);
 
         $service = $factory($container);
 
-        self::assertInstanceOf(stdClass::class, $service);
+        $this->assertInstanceOf(stdClass::class, $service);
     }
 
     /**
@@ -136,16 +136,16 @@ final class ContainerTest extends TestCase
     {
         $container = new Container();
         $container->set('id', 'value');
-        self::assertSame('value', $container->get('id'));
+        $this->assertSame('value', $container->get('id'));
 
         $stdClass = new stdClass();
         $container->set(stdClass::class, $stdClass);
-        self::assertInstanceOf(stdClass::class, $container->get(stdClass::class));
-        self::assertSame($stdClass, $container->get(stdClass::class));
+        $this->assertInstanceOf(stdClass::class, $container->get(stdClass::class));
+        $this->assertSame($stdClass, $container->get(stdClass::class));
 
         $container->set(stdClass::class, new stdClass());
-        self::assertInstanceOf(stdClass::class, $container->get(stdClass::class));
-        self::assertNotSame($stdClass, $container->get(stdClass::class));
+        $this->assertInstanceOf(stdClass::class, $container->get(stdClass::class));
+        $this->assertNotSame($stdClass, $container->get(stdClass::class));
     }
 
     /**
@@ -168,9 +168,9 @@ final class ContainerTest extends TestCase
 
         $service = $container->get('id');
 
-        self::assertInstanceOf(stdClass::class, $service);
+        $this->assertInstanceOf(stdClass::class, $service);
 
-        self::assertSame($service, $container->get('id'));
+        $this->assertSame($service, $container->get('id'));
     }
 
     /**
@@ -212,9 +212,9 @@ final class ContainerTest extends TestCase
 
         $service = $container->get('id');
 
-        self::assertInstanceOf(stdClass::class, $service);
+        $this->assertInstanceOf(stdClass::class, $service);
 
-        self::assertSame($service, $container->get('id'));
+        $this->assertSame($service, $container->get('id'));
     }
 
     /**
@@ -226,7 +226,7 @@ final class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        self::assertFalse($container->has('id'));
+        $this->assertFalse($container->has('id'));
 
         $factories = [];
         $factories['id'] = static function () {
@@ -237,7 +237,7 @@ final class ContainerTest extends TestCase
         $reflectionFactories->setAccessible(true);
         $reflectionFactories->setValue($container, $factories);
 
-        self::assertTrue($container->has('id'));
+        $this->assertTrue($container->has('id'));
     }
 
     /**
@@ -251,7 +251,7 @@ final class ContainerTest extends TestCase
         $container->addResolver(new ConstructorResolver($container));
         $service = $container->get(MyService::class);
 
-        self::assertInstanceOf(MyService::class, $service);
+        $this->assertInstanceOf(MyService::class, $service);
     }
 
     /**
@@ -265,7 +265,7 @@ final class ContainerTest extends TestCase
         $container->addResolver(new ConstructorResolver($container));
         $service = $container->get(MyServiceA::class);
 
-        self::assertInstanceOf(MyServiceA::class, $service);
+        $this->assertInstanceOf(MyServiceA::class, $service);
     }
 
     /**
@@ -318,7 +318,7 @@ final class ContainerTest extends TestCase
     public function testAutowireWithInvalidAbstractClass(): void
     {
         $this->expectException(InvalidDefinitionException::class);
-        $this->expectErrorMessage('Entry "Selective\Tests\Container\Unit\Service\MyAbstractService" cannot ' .
+        $this->expectErrorMessage('Entry "Selective\Container\Test\TestCase\Service\MyAbstractService" cannot ' .
             'be resolved: the class is not instantiable');
 
         $container = new Container();
