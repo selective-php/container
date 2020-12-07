@@ -296,6 +296,7 @@ final class ContainerTest extends TestCase
             $this->assertInstanceOf(Exception::class, $container->get(Exception::class));
         } else {
             // PHP 7.x
+            // Cannot determine default value for internal functions
             $this->expectException(InvalidDefinitionException::class);
             $container->get(Exception::class);
         }
@@ -308,11 +309,18 @@ final class ContainerTest extends TestCase
      */
     public function testAutowireWithInvalidInternalInterface(): void
     {
-        $this->expectException(InvalidDefinitionException::class);
-
         $container = new Container();
         $container->addResolver(new ConstructorResolver($container));
-        $container->get(NotFoundException::class);
+
+        if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
+            // PHP 8+
+            $this->assertInstanceOf(NotFoundException::class, $container->get(NotFoundException::class));
+        } else {
+            // PHP 7.x
+            // Cannot determine default value for internal functions
+            $this->expectException(InvalidDefinitionException::class);
+            $container->get(NotFoundException::class);
+        }
     }
 
     /**
