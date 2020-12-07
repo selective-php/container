@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Selective\Tests\Container\Unit;
+namespace Selective\Container\Test\Resolver\TestCase;
 
 use PHPUnit\Framework\TestCase;
 use Selective\Container\Container;
