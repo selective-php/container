@@ -9,7 +9,7 @@
 
 ## Description
 
-A simple PSR-11 container implementation with **autowiring**.
+A PSR-11 container implementation with optional **autowiring**.
 
 ## Requirements
 
@@ -23,28 +23,11 @@ composer require selective/container
 
 ## Usage
 
-### Use dependency injection
-
-The container is able to automatically create and inject dependencies for you. This is called "autowiring".
-
-```php
-<?php
-
-use App\Service\MyService;
-use Selective\Container\Container;
-use Selective\Container\Resolver\ConstructorResolver;
-
-$container = new Container();
-
-// Enable autowiring
-$container->addResolver(new ConstructorResolver($container));
-
-$service = $container->get(MyService::class);
-```
+General advise: Don't use the container as a service locator.
 
 ### Factories
 
-On top of autowiring, you can use a factories (closures) to define injections.
+You can use a factories (closures) to define injections.
 
 ```php
 <?php
@@ -62,7 +45,28 @@ $container->factory(MyService::class, function (ContainerInterface $container) {
 });
 ```
 
-**Please note:** It's not supported to replace or extend an existing definition to avoid **unwanted side effects**.
+**Please note:** It's not supported to replace or extend an existing factory definition to avoid **unwanted side effects**.
+
+### Use dependency injection
+
+The container is able to automatically create and inject dependencies for you. This is called "autowiring".
+
+To enable autowiring you have to add the `ConstructorResolver`:
+
+```php
+<?php
+
+use Selective\Container\Container;
+use Selective\Container\Resolver\ConstructorResolver;
+
+$container = new Container();
+
+// Enable autowiring
+$container->addResolver(new ConstructorResolver($container));
+
+//...
+
+```
 
 ### Service providers
 
@@ -82,7 +86,7 @@ use Selective\Container\Container;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-final class MyServiceProviderFactory
+final class MyServiceFactoryProvider
 {
     /**
      * @return array<string, callable>
@@ -98,7 +102,49 @@ final class MyServiceProviderFactory
 }
 
 $container = new Container();
-$container->factories((new MyServiceProviderFactory())());
+$container->factories((new MyServiceFactoryProvider())());
+```
+
+### Setting definitions in the container directly
+
+In addition to defining entries in an array of factories, you can set them directly in the container as shown below:
+
+```php
+$container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
+```
+
+### Fetch container entries
+
+To fetch a service use the `get` method:
+
+```php
+$pdo = $container->get(PDO::class);
+```
+
+### Testing
+
+* Make sure that your container will be recreated for each test. You may use the phpunit `setUp()` method to initialize the container definitions.
+* You can use the `set()` method to overwrite existing container entries.
+
+#### Mocking
+
+The `set` method can also be used to set mocked objects directly into the container.
+
+This example requires phpunit:
+
+```php
+<?php
+
+$class = \App\Domain\User\Repository\UserRepository::class;
+
+$mock = $this->getMockBuilder($class)
+    ->disableOriginalConstructor()
+    ->getMock();
+
+$mock->method('methodToMock1')->willReturn('foo');
+$mock->method('methodToMock2')->willReturn('bar');
+
+$container->set($class, $mock);
 ```
 
 ## Slim 4 integration
@@ -155,7 +201,7 @@ return [
     },
     
     // Add more definitions here...
-}
+]
 ```
 
 ## IDE integration
@@ -179,6 +225,47 @@ override(\Psr\Container\ContainerInterface::get(0), map(['' => '@']));
 * 5.4% faster then `league/container`.
 
 All tests where made with enabled autowiring.
+
+## Migrating from PHP-DI
+
+This PSR-11 container implementation mimics the behavior of PHP-DI.
+
+If you already use [factories](https://php-di.org/doc/php-definitions.html#factories) for your container definitions,
+the switch should be very simple.
+
+Replace this:
+
+```php
+<?php
+use DI\ContainerBuilder;
+
+// ...
+
+$containerBuilder = new ContainerBuilder();
+
+$containerBuilder->addDefinitions(__DIR__ . '/container.php');
+
+$container = $containerBuilder->build();
+```
+
+... with this:
+
+```php
+<?php
+use Selective\Container\Container;
+use Selective\Container\Resolver\ConstructorResolver;
+// ...
+
+$container = new Container();
+
+// Enable autowiring
+$container->addResolver(new ConstructorResolver($container));
+
+// Add definitons
+$container->factories(require __DIR__ . '/container.php');
+```
+
+That's it.
 
 ## Credits
 
