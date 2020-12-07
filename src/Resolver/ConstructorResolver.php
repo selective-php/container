@@ -70,7 +70,7 @@ final class ConstructorResolver implements DefinitionResolverInterface
      * Resolve method parameters.
      *
      * @param string $id The id
-     * @param ReflectionMethod $method The method
+     * @param ReflectionMethod|null $method The method
      *
      * @return array<mixed> The resolved parameters
      */
