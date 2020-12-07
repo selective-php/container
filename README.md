@@ -1,11 +1,11 @@
 # selective/container
 
-[![Latest Version on Packagist](https://img.shields.io/github/release/selective-php/container.svg?style=flat-square)](https://packagist.org/packages/selective/container)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://github.com/selective-php/container/workflows/PHP/badge.svg)](https://github.com/selective-php/container/actions)
-[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/selective-php/container.svg?style=flat-square)](https://scrutinizer-ci.com/g/selective-php/container/code-structure)
-[![Quality Score](https://img.shields.io/scrutinizer/quality/g/selective-php/container.svg?style=flat-square)](https://scrutinizer-ci.com/g/selective-php/container/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/selective/container.svg?style=flat-square)](https://packagist.org/packages/selective/container/stats)
+[![Latest Version on Packagist](https://img.shields.io/github/release/selective-php/container.svg)](https://packagist.org/packages/selective/container)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+[![Build Status](https://github.com/selective-php/container/workflows/build/badge.svg)](https://github.com/selective-php/container/actions)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/selective-php/container.svg)](https://scrutinizer-ci.com/g/selective-php/container/code-structure)
+[![Quality Score](https://img.shields.io/scrutinizer/quality/g/selective-php/container.svg)](https://scrutinizer-ci.com/g/selective-php/container/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/selective/container.svg)](https://packagist.org/packages/selective/container/stats)
 
 ## Description
 
@@ -13,7 +13,7 @@ A simple PSR-11 container implementation with **autowiring**.
 
 ## Requirements
 
- * PHP 7.2+
+ * PHP 7.2+ or 8.0+
 
 ## Installation
 
