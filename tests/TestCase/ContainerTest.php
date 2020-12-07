@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace Selective\Container\Test\TestCase;
 
 use Exception;
@@ -289,11 +287,18 @@ final class ContainerTest extends TestCase
      */
     public function testAutowireWithInvalidInternalClass(): void
     {
-        $this->expectException(InvalidDefinitionException::class);
-
         $container = new Container();
         $container->addResolver(new ConstructorResolver($container));
-        $container->get(Exception::class);
+
+        // https://3v4l.org/1AXpr
+        if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
+            // PHP 8+
+            $this->assertInstanceOf(Exception::class, $container->get(Exception::class));
+        } else {
+            // PHP 7.x
+            $this->expectException(InvalidDefinitionException::class);
+            $container->get(Exception::class);
+        }
     }
 
     /**
