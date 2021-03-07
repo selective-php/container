@@ -32,7 +32,7 @@ final class Container implements ContainerInterface, FactoryInterface
     /**
      * The constructor.
      *
-     * @param array<string, callable> $factories The factory definitons
+     * @param array<string, callable> $factories The factory definitions
      */
     public function __construct(array $factories = [])
     {
@@ -42,7 +42,7 @@ final class Container implements ContainerInterface, FactoryInterface
     }
 
     /**
-     * Add factory definitons.
+     * Add factory definitions.
      *
      * @param array<string, callable> $factories The callables
      *
@@ -56,7 +56,7 @@ final class Container implements ContainerInterface, FactoryInterface
     }
 
     /**
-     * Add factory definiton.
+     * Add factory definition.
      *
      * @param string $id The container id
      * @param callable $factory The callable
@@ -94,7 +94,7 @@ final class Container implements ContainerInterface, FactoryInterface
      *
      * @return mixed The entry
      */
-    public function get($id)
+    public function get(string $id)
     {
         return $this->services[$id] ?? $this->services[$id] = $this->create($id);
     }
@@ -106,11 +106,11 @@ final class Container implements ContainerInterface, FactoryInterface
      * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
      * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
      *
-     * @param string $id Tentifier of the entry to look for
+     * @param string $id The identifier of the entry to look for
      *
      * @return bool The status
      */
-    public function has($id): bool
+    public function has(string $id): bool
     {
         return isset($this->services[$id]) || isset($this->factories[$id]) || $this->isResolvable($id);
     }
