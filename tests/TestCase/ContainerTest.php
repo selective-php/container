@@ -33,7 +33,7 @@ final class ContainerTest extends TestCase
     public function testConstruct(): void
     {
         $container = new Container([
-            'id' => static function () {
+            'id' => function () {
                 return new stdClass();
             },
         ]);
@@ -61,7 +61,7 @@ final class ContainerTest extends TestCase
     {
         $container = new Container();
         $container->factories([
-            'id' => static function () {
+            'id' => function () {
                 return new stdClass();
             },
         ]);
@@ -88,7 +88,7 @@ final class ContainerTest extends TestCase
     public function testFactory(): void
     {
         $container = new Container();
-        $container->factory('id', static function () {
+        $container->factory('id', function () {
             return new stdClass();
         });
 
@@ -118,10 +118,10 @@ final class ContainerTest extends TestCase
 
         $container = new Container();
 
-        $container->factory('id', static function () {
+        $container->factory('id', function () {
         });
 
-        $container->factory('id', static function () {
+        $container->factory('id', function () {
         });
     }
 
@@ -154,7 +154,7 @@ final class ContainerTest extends TestCase
     public function testGet(): void
     {
         $factories = [];
-        $factories['id'] = static function () {
+        $factories['id'] = function () {
             return new stdClass();
         };
 
@@ -198,7 +198,7 @@ final class ContainerTest extends TestCase
         $this->expectExceptionCode(0);
 
         $factories = [];
-        $factories['id'] = static function (ContainerInterface $container): void {
+        $factories['id'] = function (ContainerInterface $container): void {
             $container->get('unknown');
         };
 
@@ -227,7 +227,7 @@ final class ContainerTest extends TestCase
         $this->assertFalse($container->has('id'));
 
         $factories = [];
-        $factories['id'] = static function () {
+        $factories['id'] = function () {
             return new stdClass();
         };
 
