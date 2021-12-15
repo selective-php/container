@@ -1,6 +1,6 @@
 <?php
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setUsingCache(false)
     ->setRiskyAllowed(true)
     //->setCacheFile(__DIR__ . '/.php_cs.cache')
@@ -8,7 +8,7 @@ return PhpCsFixer\Config::create()
         '@PSR1' => true,
         '@PSR2' => true,
         '@Symfony' => true,
-        'psr4' => true,
+        'psr_autoloading' => true,
         // custom rules
         'align_multiline_comment' => ['comment_type' => 'phpdocs_only'], // psr-5
         'phpdoc_to_comment' => false,
@@ -21,7 +21,7 @@ return PhpCsFixer\Config::create()
         'declare_equal_normalize' => ['space' => 'single'],
         'increment_style' => ['style' => 'post'],
         'list_syntax' => ['syntax' => 'short'],
-        'no_short_echo_tag' => true,
+        'echo_tag_syntax' => ['format' => 'long'],
         'phpdoc_add_missing_param_annotation' => ['only_untyped' => false],
         'phpdoc_align' => false,
         'phpdoc_no_empty_return' => false,
