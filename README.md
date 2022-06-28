@@ -17,13 +17,20 @@ A PSR-11 container implementation with optional **autowiring**.
 
 ## Installation
 
-```sh
+```
 composer require selective/container
 ```
 
 ## Usage
 
-General advise: Don't use the container as a service locator.
+```php
+use Selective\Container\Container;
+
+$container = new Container();
+// ...
+
+$object = $container->get(MyService::class);
+```
 
 ### Factories
 
@@ -44,8 +51,6 @@ $container->factory(MyService::class, function (ContainerInterface $container) {
     return new MyService($container->get(LoggerInterface::class));
 });
 ```
-
-**Please note:** It's not supported to replace or extend an existing factory definition to avoid **unwanted side effects**.
 
 ### Use dependency injection
 
@@ -166,7 +171,7 @@ $container = new Container();
 // Enable autowiring
 $container->addResolver(new ConstructorResolver($container));
 
-// Load container definitons
+// Load container definitions
 $container->factories(require __DIR__ . '/container.php');
 
 // Create slim app instance
