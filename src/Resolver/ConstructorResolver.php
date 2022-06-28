@@ -5,6 +5,7 @@ namespace Selective\Container\Resolver;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionParameter;
 use Selective\Container\Exceptions\InvalidDefinitionException;
 use Throwable;
@@ -41,10 +42,12 @@ final class ConstructorResolver implements DefinitionResolverInterface
     public function resolve(string $id)
     {
         if (!$this->isResolvable($id)) {
-            throw InvalidDefinitionException::create(sprintf(
-                'Entry "%s" cannot be resolved: The class doesn\'t exist',
-                $id
-            ));
+            throw InvalidDefinitionException::create(
+                sprintf(
+                    'Entry "%s" cannot be resolved: The class doesn\'t exist',
+                    $id
+                )
+            );
         }
 
         $reflectionClass = new ReflectionClass($id);
@@ -57,10 +60,13 @@ final class ConstructorResolver implements DefinitionResolverInterface
 
             return $reflectionClass->newInstanceArgs($this->resolveParameters($id, $constructor));
         } catch (Throwable $exception) {
-            throw InvalidDefinitionException::create(sprintf(
-                'Entry "%s" cannot be resolved: the class is not instantiable',
-                $id
-            ), $exception);
+            throw InvalidDefinitionException::create(
+                sprintf(
+                    'Entry "%s" cannot be resolved: the class is not instantiable',
+                    $id
+                ),
+                $exception
+            );
         }
     }
 
@@ -99,15 +105,11 @@ final class ConstructorResolver implements DefinitionResolverInterface
      */
     private function resolveParameter(string $id, ReflectionParameter $parameter)
     {
-        $reflectionClass = $parameter->getClass();
+        $className = $this->getClassName($parameter);
 
-        if ($reflectionClass !== null) {
-            // Look in the definitions or try to create it
-            $className = $reflectionClass->getName();
-
-            if ($this->container->has($className)) {
-                return $this->container->get($className);
-            }
+        // Look in the definitions or try to create it
+        if ($className !== null && $this->container->has($className)) {
+            return $this->container->get($className);
         }
 
         // If the parameter is optional and wasn't specified, we take its default value
@@ -115,11 +117,13 @@ final class ConstructorResolver implements DefinitionResolverInterface
             return $parameter->getDefaultValue();
         }
 
-        throw InvalidDefinitionException::create(sprintf(
-            'Parameter $%s of %s has no value defined or guessable',
-            $parameter->getName(),
-            $id
-        ));
+        throw InvalidDefinitionException::create(
+            sprintf(
+                'Parameter $%s of %s has no value defined or guessable',
+                $parameter->getName(),
+                $id
+            )
+        );
     }
 
     /**
@@ -132,5 +136,23 @@ final class ConstructorResolver implements DefinitionResolverInterface
     public function isResolvable(string $id): bool
     {
         return class_exists($id);
+    }
+
+    /**
+     * Get class name.
+     *
+     * @param ReflectionParameter $parameter The parameter
+     *
+     * @return string|null The class name
+     */
+    private function getClassName(ReflectionParameter $parameter): ?string
+    {
+        $reflectionType = $parameter->getType();
+
+        if ($reflectionType instanceof ReflectionNamedType && !$reflectionType->isBuiltin()) {
+            return $reflectionType->getName();
+        }
+
+        return null;
     }
 }
