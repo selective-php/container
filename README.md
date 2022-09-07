@@ -81,7 +81,7 @@ as definitions registered within a service provider are lazily registered
 at the point where a service is retrieved.
 
 To build a service provider create a invokable class and 
-return the definitons (factories) you would like to register.
+return the definitions (factories) you would like to register.
 
 ```php
 <?php
@@ -266,7 +266,7 @@ $container = new Container();
 // Enable autowiring
 $container->addResolver(new ConstructorResolver($container));
 
-// Add definitons
+// Add definitions
 $container->factories(require __DIR__ . '/container.php');
 ```
 
