@@ -95,7 +95,7 @@ $container->factories($entries);
 ```
 
 
-### Service providers
+### Service Providers
 
 Service providers give the benefit of organising your container 
 definitions along with an increase in performance for larger applications 
@@ -131,18 +131,18 @@ final class MyServiceFactoryProvider
 $container->factories((new MyServiceFactoryProvider())());
 ```
 
-### Setting definitions in the container directly
+### Set definitions directly
 
-In addition to defining entries in an array of factories, 
-you can set them directly in the container as shown below:
+In addition to defining entries in an array of factories / callbacks, 
+you can also set the value directly as shown below:
 
 ```php
 $container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
 ```
 
-### Fetch container entries
+### Fetching DI container entries
 
-To fetch a service use the `get` method:
+To fetch a value use the `get` method:
 
 ```php
 $pdo = $container->get(PDO::class);
