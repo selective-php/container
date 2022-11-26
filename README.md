@@ -13,7 +13,7 @@ A PSR-11 container implementation with optional **autowiring**.
 
 ## Requirements
 
- * PHP 7.4+ or 8.0+
+ * PHP 8.0+
 
 ## Installation
 
@@ -29,30 +29,10 @@ use Selective\Container\Container;
 $container = new Container();
 // ...
 
-$object = $container->get(MyService::class);
+$myService = $container->get(MyService::class);
 ```
 
-### Factories
-
-You can use a factories (closures) to define injections.
-
-```php
-<?php
-
-use App\Service\MyService;
-use Selective\Container\Container;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-
-$container = new Container();
-
-// Add definition
-$container->factory(MyService::class, function (ContainerInterface $container) {
-    return new MyService($container->get(LoggerInterface::class));
-});
-```
-
-### Use dependency injection
+### Enable Autowiring
 
 The container is able to automatically create and inject dependencies for you. This is called "autowiring".
 
@@ -72,6 +52,48 @@ $container->addResolver(new ConstructorResolver($container));
 //...
 
 ```
+
+### Defining DI Container Definitions
+
+You can use a factories (closures) to define injections.
+
+```php
+<?php
+
+use App\Service\MyService;
+use Selective\Container\Container;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+
+$container = new Container();
+
+// Add definition
+$container->factory(MyService::class, function (ContainerInterface $container) {
+    return new MyService();
+});
+```
+
+## Defining Multiple DI Container Definitions
+
+```php
+use Psr\Container\ContainerInterface;
+// ...
+
+$entries = [
+    MyService::class => function (ContainerInterface $container) {
+        return new MyService();
+    },
+    
+    PDO::class => function (ContainerInterface $container) {
+        return new PDO('sqlite:example.db');
+    },
+    
+    // and so on...
+];
+
+$container->factories($entries);
+```
+
 
 ### Service providers
 
@@ -106,13 +128,13 @@ final class MyServiceFactoryProvider
     }
 }
 
-$container = new Container();
 $container->factories((new MyServiceFactoryProvider())());
 ```
 
 ### Setting definitions in the container directly
 
-In addition to defining entries in an array of factories, you can set them directly in the container as shown below:
+In addition to defining entries in an array of factories, 
+you can set them directly in the container as shown below:
 
 ```php
 $container->set(\App\Domain\MyService::class, new \App\Domain\MyService());
@@ -209,7 +231,7 @@ return [
 ]
 ```
 
-## IDE integration
+## PhpStorm Integration
 
 If you use PhpStorm, then create a new file `.phpstorm.meta.php`
 in your project root directory and copy/paste the following content:
@@ -222,7 +244,7 @@ namespace PHPSTORM_META;
 override(\Psr\Container\ContainerInterface::get(0), map(['' => '@']));
 ```
 
-## Performance
+## Performance Comparison
 
 `selective/container` is about:
 
@@ -263,7 +285,7 @@ use Selective\Container\Resolver\ConstructorResolver;
 
 $container = new Container();
 
-// Enable autowiring
+// Enable auto-wiring
 $container->addResolver(new ConstructorResolver($container));
 
 // Add definitions

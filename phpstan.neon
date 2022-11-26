@@ -1,5 +1,9 @@
 parameters:
+	level: 8
 	reportUnmatchedIgnoredErrors: false
+	paths:
+		- src
+		- tests
 	ignoreErrors:
 		- '/Parameter \#1 \$argument of class ReflectionClass constructor expects class-string\<T of object\>\|T of object, string given/'
 		- '/Parameter \#1 \$id of method Selective\\Container\\Resolver\\ConstructorResolver\:\:resolve\(\) expects class-string, string given/'
