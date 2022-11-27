@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Selective\Container\Test\Resolver\TestCase;
 
@@ -11,11 +11,6 @@ use Selective\Container\Resolver\ConstructorResolver;
 
 class ConstructorResolverTest extends TestCase
 {
-    /**
-     * Test.
-     *
-     * @return void
-     */
     public function testResolveOnInvalidDefinition(): void
     {
         $this->expectException(InvalidDefinitionException::class);
