@@ -301,8 +301,8 @@ That's it.
 ## Similar libraries
 
 * https://github.com/chubbyphp/chubbyphp-container
-* http://php-di.org/
-* https://container.thephpleague.com/
+* https://github.com/PHP-DI/PHP-DI
+* https://github.com/thephpleague/container
 
 ## License
 
