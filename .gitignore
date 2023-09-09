@@ -1,10 +1,7 @@
 .idea/
-nbproject/
 composer.lock
-.DS_STORE
-cache.properties
-.php_cs.cache
-.vscode/
-.phpunit.result.cache
+nbproject/
 vendor/
 build/
+.phpunit.cache/
+.phpunit.result.cache

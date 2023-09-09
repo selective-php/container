@@ -13,7 +13,7 @@ A PSR-11 container implementation with optional **autowiring**.
 
 ## Requirements
 
- * PHP 8.0+
+ * PHP 8.1+
 
 ## Installation
 

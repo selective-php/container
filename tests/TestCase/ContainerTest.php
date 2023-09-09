@@ -114,7 +114,7 @@ final class ContainerTest extends TestCase
     public function testReplace(): void
     {
         $this->expectException(LogicException::class);
-        $this->expectErrorMessage('The factory cannot be modified');
+        $this->expectExceptionMessage('The factory cannot be modified');
 
         $container = new Container();
 
@@ -331,7 +331,7 @@ final class ContainerTest extends TestCase
     public function testAutowireWithInvalidAbstractClass(): void
     {
         $this->expectException(InvalidDefinitionException::class);
-        $this->expectErrorMessage('Entry "Selective\Container\Test\TestCase\Service\MyAbstractService" cannot ' .
+        $this->expectExceptionMessage('Entry "Selective\Container\Test\TestCase\Service\MyAbstractService" cannot ' .
             'be resolved: the class is not instantiable');
 
         $container = new Container();
@@ -347,7 +347,7 @@ final class ContainerTest extends TestCase
     public function testAutowireWithNotExistingClass(): void
     {
         $this->expectException(NotFoundException::class);
-        $this->expectErrorMessage('There is no service with id "Nada\Foo"');
+        $this->expectExceptionMessage('There is no service with id "Nada\Foo"');
 
         $container = new Container();
         $container->addResolver(new ConstructorResolver($container));

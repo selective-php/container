@@ -33,7 +33,7 @@ final class ConstructorResolver implements DefinitionResolverInterface
     /**
      * Autowire dependencies.
      *
-     * @param string|class-string $id The id
+     * @param class-string $id The id
      *
      * @throws InvalidDefinitionException
      *
